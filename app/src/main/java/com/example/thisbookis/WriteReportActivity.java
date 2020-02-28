@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thisbookis.data.Book;
+import com.example.thisbookis.data.Draft;
 import com.example.thisbookis.data.Report;
 import com.example.thisbookis.data.SearchResult;
 import com.example.thisbookis.data.User;
@@ -44,7 +45,7 @@ public class WriteReportActivity extends BaseActivity implements View.OnClickLis
 
     EditText titleEditText, contentsEditText;
     Switch shouldShareSwitch;
-    TextView bookTitleTextView;
+    TextView bookTitleTextView, saveDraftButton;
     ImageView backButton;
     Button saveButton;
 
@@ -53,11 +54,13 @@ public class WriteReportActivity extends BaseActivity implements View.OnClickLis
     boolean isShared;
     boolean shouldShare;
     boolean isModifying;
+    boolean isDraft;
     User user;
     Report report;
     String reportTitle;
     String reportContents;
 
+    Draft draft;
     Handler mHandler;
 
     @Override
@@ -80,32 +83,44 @@ public class WriteReportActivity extends BaseActivity implements View.OnClickLis
         bookTitleTextView = findViewById(R.id.write_report_book_title_tv);
         backButton = findViewById(R.id.write_report_back_btn);
         saveButton = findViewById(R.id.write_report_save_btn);
+        saveDraftButton = findViewById(R.id.write_report_save_draft_btn);
 
         if(isModifying){
             bookTitleTextView.setText(report.getBookTitle());
             titleEditText.setText(report.getTitle());
             contentsEditText.setText(report.getContents());
             shouldShareSwitch.setChecked(report.isShouldShare());
-            shouldShareSwitch.setOnCheckedChangeListener(this);
+        }else if(isDraft){
+            bookTitleTextView.setText(apiBook.getTitle());
+            titleEditText.setText(draft.getTitle());
+            contentsEditText.setText(draft.getContent());
+            shouldShare = draft.getShouldShare();
+            shouldShareSwitch.setChecked(shouldShare);
         }else{
             bookTitleTextView.setText(apiBook.getTitle());
             shouldShareSwitch.setChecked(shouldShare);
-            shouldShareSwitch.setOnCheckedChangeListener(this);
         }
 
+        shouldShareSwitch.setOnCheckedChangeListener(this);
         backButton.setOnClickListener(this);
         saveButton.setOnClickListener(this);
+        saveDraftButton.setOnClickListener(this);
+
     }
 
     private void initData(){
         user = BaseApplication.userData;
         Intent intent = getIntent();
         isModifying = intent.getBooleanExtra("modify", false);
+        isDraft = intent.getBooleanExtra("isDraft", false);
         // 기존 독후감을 수정 중이라면 report 객체를 받아와 작업, 새로 독후감을 쓰는거라면 책 검색결과 객체를 가져와 작업
         if(isModifying){
             report = (Report) intent.getSerializableExtra("report");
             isShared = report.isShouldShare();
             shouldShare = isShared;
+        }else if(isDraft){
+            apiBook  = (SearchResult.Document) intent.getSerializableExtra("book");
+            draft = (Draft) intent.getSerializableExtra("draft");
         }else{
             apiBook = (SearchResult.Document) intent.getSerializableExtra("book");
             shouldShare = user.isShouldShareReport();
@@ -408,6 +423,51 @@ public class WriteReportActivity extends BaseActivity implements View.OnClickLis
 
     }
 
+    private void saveDraft(){
+        String title;
+        String content;
+        String saveTime;
+        boolean shouldShare;
+
+        title = titleEditText.getText().toString();
+        content = contentsEditText.getText().toString();
+
+        Date today = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        saveTime = sdf.format(today);
+
+        shouldShare = this.shouldShare;
+
+        Draft draft = new Draft(title, content, shouldShare, saveTime, apiBook.getIsbn(), apiBook.getTitle());
+
+        DatabaseReference draftRef = FirebaseDatabase.getInstance().getReference().child(getString(R.string.firebase_user_data_key))
+                .child(user.getUserId()).child("temporaryStorages");
+
+        String draftKey = draftRef.push().getKey();
+        draft.setDraftKey(draftKey);
+
+        draftRef = draftRef.child(draftKey);
+
+        draftRef.setValue(draft).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "saveDraft() : 임시저장 성공");
+                BaseApplication.showCompleteToast(mContext, "임시저장 되었습니다.");
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 500);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "saveDraft() : 임시저장 실패 " + e.getMessage());
+            }
+        });
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -431,6 +491,13 @@ public class WriteReportActivity extends BaseActivity implements View.OnClickLis
                     startSaveProgress();
                 }
                 break;
+            case R.id.write_report_save_draft_btn:
+                BaseApplication.showDialog(mContext, "임시 저장하시겠습니까?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        saveDraft();
+                    }
+                });
         }
     }
 

@@ -16,16 +16,16 @@ public class User {
     boolean shouldShareReport;
     LinkedHashMap<String, Report> reports = new LinkedHashMap<>();
     LinkedHashMap<String, MyBook> myBooks = new LinkedHashMap<>();
-    ArrayList<Report> temporaryStroages;
+    LinkedHashMap<String, Draft> temporaryStroages = new LinkedHashMap<>();
 
     public User() {
     }
 
-    public ArrayList<Report> getTemporaryStroages() {
+    public LinkedHashMap<String, Draft> getTemporaryStroages() {
         return temporaryStroages;
     }
 
-    public void setTemporaryStroages(ArrayList<Report> temporaryStroages) {
+    public void setTemporaryStroages(LinkedHashMap<String, Draft> temporaryStroages) {
         this.temporaryStroages = temporaryStroages;
     }
 

@@ -6,13 +6,13 @@ import java.io.Serializable;
 
 @Keep
 public class Draft implements Serializable {
-    String title;
-    String content;
-    Boolean shouldShare;
-    String saveTime;
-    String bookISBN;
-    String bookTitle;
-    String draftKey;
+   private String title;
+   private String content;
+   private Boolean shouldShare;
+   private String saveTime;
+   private String bookISBN;
+   private String bookTitle;
+   private String draftKey;
 
     public Draft(String title, String content, Boolean shouldShare, String saveTime, String bookISBN, String bookTitle) {
         this.title = title;
