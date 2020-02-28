@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:elevation="5dp"
+    android:layout_margin="10dp"
+    android:background="@color/white">
+    <ImageView
+        android:id="@+id/my_reports_thumbnail_iv"
+        android:layout_width="100dp"
+        android:layout_height="130dp"
+        android:contentDescription="@string/my_report_item_thumnail_desc"/>
+
+    <LinearLayout
+        android:id="@+id/my_report_item_ll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_weight="1"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/my_reports_book_title_authors_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/line_background"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/my_reports_title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:id="@+id/my_reports_contents_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="5dp">
+            <TextView
+                android:id="@+id/my_report_item_share_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginEnd="10dp"
+                android:textSize="12sp"/>
+            <ImageView
+                android:id="@+id/my_report_item_share_icon_iv"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:contentDescription="@string/my_report_item_lock_desc"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/my_report_item_menu_btn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:padding="5dp"
+        android:contentDescription="@string/my_report_item_menu_desc"
+        android:src="@drawable/ic_menu"
+        android:layout_marginStart="5dp"/>
+
+</LinearLayout>

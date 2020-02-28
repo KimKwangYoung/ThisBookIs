@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/infinityframe0" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe1" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe2" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe3" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe4" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe5" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe6" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe7" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe8" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe9" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe10" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe11" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe12" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe13" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe14" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe15" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe16" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe17" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe18" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe19" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe20" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe21" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe22" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe23" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe24" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe25" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe26" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe27" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe28" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe29" android:duration="40"/>
+    <item android:drawable="@drawable/infinityframe30" android:duration="40"/>
+</animation-list>
