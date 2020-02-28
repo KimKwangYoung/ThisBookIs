@@ -108,7 +108,7 @@ public class JoinActivity extends BaseActivity implements View.OnClickListener{
 
             @Override
             public void onPermissionDenied(List<String> deniedPermissions) {
-                Toast.makeText(mContext, "권한이 거부 되었습니다.", Toast.LENGTH_SHORT).show();
+                BaseApplication.showInfoToast(mContext, "권한이 거부 되었습니다.");
             }
         };
 
