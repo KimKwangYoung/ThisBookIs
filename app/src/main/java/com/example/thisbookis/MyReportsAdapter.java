@@ -151,7 +151,9 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.View
             return false;
         }
 
-        // 유저 부분에 저장되어있는 독후감 삭제
+        /**
+         * 유저 부분에 저장되어있는 독후감 삭제
+         */
         private void removeReportOfUser(){
             Report r = reportsList.get(getAdapterPosition());
             LinkedHashMap<String, Report> myReports = BaseApplication.userData.getReports();
@@ -183,7 +185,10 @@ public class MyReportsAdapter extends RecyclerView.Adapter<MyReportsAdapter.View
             });
         }
 
-        // 책 부분에 저장되어 있는 독후감 삭제
+        /**
+         * 책 부분에 저장되어 있는 독후감 삭제
+         * @param r : 삭제할 독후감
+         */
         private void removeReportOfBook(Report r) {
             DatabaseReference reportRef = FirebaseDatabase.getInstance().getReference()
                     .child(mContext.getString(R.string.firebase_book_data_key)).child(r.getBookISBN())
