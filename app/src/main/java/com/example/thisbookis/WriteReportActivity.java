@@ -453,6 +453,14 @@ public class WriteReportActivity extends BaseActivity implements View.OnClickLis
             public void onSuccess(Void aVoid) {
                 Log.d(TAG, "saveDraft() : 임시저장 성공");
                 BaseApplication.showCompleteToast(mContext, "임시저장 되었습니다.");
+                LinkedHashMap<String, Draft> temporaryStorages;
+                if(user.getTemporaryStroages() == null){
+                    temporaryStorages = new LinkedHashMap<>();
+                }else{
+                    temporaryStorages = user.getTemporaryStroages();
+                }
+                temporaryStorages.put(draftKey, draft);
+                BaseApplication.userData.setTemporaryStroages(temporaryStorages);
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
