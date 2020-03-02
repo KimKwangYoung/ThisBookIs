@@ -108,7 +108,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="#dcdcdc"/>
+                android:background="#66dcdcdc" />
 
             <!-- 내가 읽은 책 & 내가 쓴 독후감 부분 -->
             <LinearLayout
@@ -238,7 +238,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="#dcdcdc"/>
+                android:background="#66dcdcdc" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

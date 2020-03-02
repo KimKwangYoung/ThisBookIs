@@ -234,6 +234,9 @@ public class WriteReportActivity extends BaseActivity implements View.OnClickLis
                     shareReport(book, report);
                     return;
                 }
+                if(isDraft){
+                    removeDraft();
+                }
                 progressOFF();
                 BaseApplication.showCompleteToast(mContext, "독후감 작성 완료!");
                 mHandler.postDelayed(new Runnable() {
@@ -486,12 +489,16 @@ public class WriteReportActivity extends BaseActivity implements View.OnClickLis
             return;
         }
 
-        DatabaseReference draftRef = FirebaseDatabase.getInstance().getReference().child(getString(R.string.firebase_user_data_key))
-                .child(user.getUserId()).child("temporaryStorages").child(draft.getDraftKey());
+        LinkedHashMap<String, Draft> drafts = user.getTemporaryStorages();
+        drafts.remove(draft.getDraftKey());
 
-        draftRef.setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
+        DatabaseReference draftRef = FirebaseDatabase.getInstance().getReference().child(getString(R.string.firebase_user_data_key))
+                .child(user.getUserId()).child("temporaryStorages");
+
+        draftRef.setValue(drafts).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                BaseApplication.userData.setTemporaryStorages(drafts);
                 Log.d(TAG, "removeDraft() : 임시저장본 삭제 완료");
             }
         }).addOnFailureListener(new OnFailureListener() {

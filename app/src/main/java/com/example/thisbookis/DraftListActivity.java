@@ -33,6 +33,7 @@ public class DraftListActivity extends AppCompatActivity {
         mContext = this;
 
         initData();
+        initView();
     }
 
     private void initData(){
@@ -52,8 +53,6 @@ public class DraftListActivity extends AppCompatActivity {
             return;
         }
 
-        initView();
-
     }
 
     private void initView() {
@@ -64,5 +63,13 @@ public class DraftListActivity extends AppCompatActivity {
         DraftListAdapter draftListAdapter = new DraftListAdapter(mContext, draftsList);
         draftRecyclerView.setAdapter(draftListAdapter);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        draftsList.clear();
+        initData();
+        initView();
     }
 }
