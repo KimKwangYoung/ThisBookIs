@@ -1,32 +1,30 @@
 package com.example.thisbookis.data;
 
 import androidx.annotation.Keep;
-import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Keep
 public class User {
-    String userId;
-    String nickname;
-    String profileURL;
-    String profilePath;
-    boolean shouldShareReport;
-    LinkedHashMap<String, Report> reports = new LinkedHashMap<>();
-    LinkedHashMap<String, MyBook> myBooks = new LinkedHashMap<>();
-    LinkedHashMap<String, Draft> temporaryStroages = new LinkedHashMap<>();
+    private String userId;
+    private String nickname;
+    private String profileURL;
+    private String profilePath;
+    private boolean shouldShareReport;
+    private LinkedHashMap<String, Report> reports;
+    private LinkedHashMap<String, MyBook> myBooks;
+    private LinkedHashMap<String, Draft> temporaryStorages;
 
     public User() {
     }
 
-    public LinkedHashMap<String, Draft> getTemporaryStroages() {
-        return temporaryStroages;
+    public LinkedHashMap<String, Draft> getTemporaryStorages() {
+        return temporaryStorages;
     }
 
-    public void setTemporaryStroages(LinkedHashMap<String, Draft> temporaryStroages) {
-        this.temporaryStroages = temporaryStroages;
+    public void setTemporaryStorages(Map<String, Draft> temporaryStorages) {
+        this.temporaryStorages = new LinkedHashMap<>(temporaryStorages);
     }
 
     public LinkedHashMap<String, MyBook> getMyBooks() {

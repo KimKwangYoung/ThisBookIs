@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".ReportActivity"></activity>
+        <activity android:name=".DraftListActivity"></activity>
+        <activity android:name=".ReportActivity" />
         <activity android:name=".MyReportsActivity" />
         <activity android:name=".MyBooksActivity" />
         <activity android:name=".WriteReportActivity" />

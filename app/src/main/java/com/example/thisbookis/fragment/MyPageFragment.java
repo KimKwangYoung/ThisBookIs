@@ -3,7 +3,6 @@ package com.example.thisbookis.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,21 +18,25 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.thisbookis.BaseActivity;
 import com.example.thisbookis.BaseApplication;
+import com.example.thisbookis.DraftListActivity;
 import com.example.thisbookis.LoginActivity;
 import com.example.thisbookis.MyBooksActivity;
 import com.example.thisbookis.MyReportsActivity;
 import com.example.thisbookis.SettingAcitivty;
 import com.example.thisbookis.R;
+import com.example.thisbookis.data.Draft;
 import com.example.thisbookis.data.User;
 import com.facebook.login.LoginManager;
-import com.kakao.auth.authorization.AuthorizationResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.nhn.android.naverlogin.OAuthLogin;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class MyPageFragment extends Fragment implements View.OnClickListener {
@@ -41,24 +44,19 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
     public final static String TAG = "MyPageFragment";
 
     private final int MODIFY_PROFILE_REQUEST_CODE = 100;
-    Fragment fragment;
+    private Fragment fragment;
 
-    ImageView profileImageView;
-    TextView profileNickNameTextView, myBooksCountTextView, myReportsCountTextView;
-    LinearLayout settingButton, myBooksButton, myReportsButton;
+    private User userData;
+    private ViewGroup rootView;
+    private ArrayList<Draft> drafts;
 
-    Button logoutButton;
-
-    User userData;
-    ViewGroup rootView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_my_page, container, false);
 
         Log.d(TAG, "onCreateView");
-
-        userData = new User();
 
         fragment = this;
 
@@ -70,6 +68,13 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initView(ViewGroup rootView){
+
+        Button logoutButton;
+        ImageView profileImageView;
+        TextView profileNickNameTextView, myBooksCountTextView, myReportsCountTextView
+                , draftTitleTextView, draftContentTextView, draftMoreViewButton;
+        LinearLayout settingButton, myBooksButton, myReportsButton, draftHideLinearLayout, draftLinearLayout;
+
         profileImageView = rootView.findViewById(R.id.my_page_profile_image_iv);
         profileNickNameTextView = rootView.findViewById(R.id.my_page_nickname_tv);
         logoutButton = rootView.findViewById(R.id.my_page_logout_btn);
@@ -78,12 +83,17 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         myBooksCountTextView = rootView.findViewById(R.id.my_page_my_books_cnt_tv);
         myReportsCountTextView = rootView.findViewById(R.id.my_page_my_reports_cnt_tv);
         myReportsButton = rootView.findViewById(R.id.my_page_my_reports_btn);
-
+        draftTitleTextView = rootView.findViewById(R.id.my_page_draft_title_tv);
+        draftContentTextView = rootView.findViewById(R.id.my_page_draft_contents_tv);
+        draftHideLinearLayout = rootView.findViewById(R.id.my_page_draft_hide_ll);
+        draftLinearLayout = rootView.findViewById(R.id.my_page_draft_ll);
+        draftMoreViewButton = rootView.findViewById(R.id.my_page_draft_more_view_btn);
 
         logoutButton.setOnClickListener(this);
         settingButton.setOnClickListener(this);
         myBooksButton.setOnClickListener(this);
         myReportsButton.setOnClickListener(this);
+        draftMoreViewButton.setOnClickListener(this);
 
         RequestOptions options = BaseApplication.profileImageOptions;
         Glide.with(fragment).load(userData.getProfileURL()).apply(options).into(profileImageView);
@@ -107,10 +117,34 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         myBooksCountTextView.setText(bookCnt);
         myReportsCountTextView.setText(reportCnt);
 
+        if(drafts != null && drafts.size() > 0){
+            Draft draft = drafts.get(0);
+            draftTitleTextView.setText(draft.getTitle());
+            draftContentTextView.setText(draft.getContent());
+            draftHideLinearLayout.setVisibility(View.GONE);
+            draftLinearLayout.setVisibility(View.VISIBLE);
+        }else{
+            draftLinearLayout.setVisibility(View.GONE);
+            draftHideLinearLayout.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void initData(){
         userData = BaseApplication.userData;
+        if(userData.getTemporaryStorages() != null) {
+            drafts = new ArrayList<>(userData.getTemporaryStorages().values());
+            Log.d(TAG, "initData 실행");
+            Collections.sort(drafts, new Comparator<Draft>() {
+                @Override
+                public int compare(Draft current, Draft after) {
+                    return -(current.getSaveTime().compareTo(after.getSaveTime()));
+                }
+            });
+        }else{
+            drafts = null;
+        }
+
     }
 
     /* ############################## 로그아웃 코드 ##############################*/
@@ -175,6 +209,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
                 Intent reportIntent = new Intent(getActivity(), MyReportsActivity.class);
                 startActivity(reportIntent);
                 break;
+            case R.id.my_page_draft_more_view_btn:
+                Intent intent = new Intent(getActivity(), DraftListActivity.class);
+                startActivity(intent);
+                break;
 
         }
     }
@@ -191,6 +229,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        initData();
         initView(rootView);
     }
 }

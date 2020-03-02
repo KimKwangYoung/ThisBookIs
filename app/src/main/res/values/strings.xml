@@ -3,7 +3,6 @@
     <string name="kakao_app_key">35eab979c96184cb86d2d12dc7234c78</string>
     <string name="facebook_app_key">199339774527583</string>
     <string name="naver_app_key">eaZgH_GFR8bQnDWF8QhA</string>
-    <!-- TODO: firebase 연동 후에 서버에 저장 -->
     <string name="naver_api_url">https://openapi.naver.com/v1/nid/me</string>
 
     <!-- firebase 테이블 키 -->
@@ -12,8 +11,6 @@
 
     <string name="kakao_api_key">KakaoAK 8e17b1d2fa09b153bd18194d7e3cbe74</string>
 
-    <string name="writing_report_content">독후감 내용</string>
-
     <string name="comment">댓글</string>
     <string name="comment_hint">댓글을 입력하여주세요.</string>
     <string name="comment_input">게시</string>
@@ -21,4 +18,9 @@
     <string name="my_report_item_menu_desc">내 독후감 삭제 및 수정 팝업 버튼</string>
     <string name="my_report_item_thumnail_desc">내 독후감 책 표지</string>
     <string name="my_report_item_lock_desc">내 독후감 공개 여부 아이콘</string>
+
+    <string name="my_page_draft_hide_desc">작성중인 독후감이 없습니다.</string>
+    <string name="my_page_draft_ll_desc">쓰고 있는 독후감</string>
+    <string name="more_view_desc">더보기  ></string>
+    <string name="my_draft">임시저장</string>
 </resources>

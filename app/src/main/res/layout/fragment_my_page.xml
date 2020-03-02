@@ -152,8 +152,7 @@
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:src="@drawable/ic_report"
-                        android:layout_marginRight="20dp"/>
-
+                        android:layout_marginEnd="20dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -167,40 +166,75 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_background"/>
-            <!-- 임시저장 부분 -->
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
+                android:text="@string/my_page_draft_ll_desc"
+                android:padding="7dp"
+                android:textSize="13sp"
+                android:textColor="@color/mainColor"
+                android:textStyle="bold"/>
+            <!-- 임시저장 부분 -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="쓰고 있는 독후감"
-                    android:padding="10dp"
-                    android:textSize="13sp"
-                    android:textColor="@color/mainColor"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/my_page_writing_report_title_tv"
+                    android:orientation="vertical"
+                    android:id="@+id/my_page_draft_ll">
+                    <TextView
+                        android:id="@+id/my_page_draft_title_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:padding="5dp" />
+                    <TextView
+                        android:id="@+id/my_page_draft_contents_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="5"
+                        android:padding="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@color/line_background"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:id="@+id/my_page_draft_more_view_btn"
+                        android:text="@string/more_view_desc"
+                        android:textColor="#000000"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="5dp"/>
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:text="도파민형 인간을 읽고서..."
-                    android:padding="10dp" />
-                <TextView
-                    android:id="@+id/my_page_writing_report_contents_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="5"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="5dp"
-                    android:text="@string/writing_report_content"
-                    android:textColor="@color/black"
-                    android:textSize="11sp"
-                    />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/my_page_draft_hide_ll"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="5dp">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_sad"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/my_page_draft_hide_desc"
+                        android:gravity="center"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+            </FrameLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
@@ -223,7 +257,7 @@
                         android:textSize="12sp"
                         android:textColor="@color/black"
                         android:text="내가 좋아하는 독후감"
-                        android:layout_marginLeft="10dp"/>
+                        android:layout_marginStart="10dp"/>
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
@@ -244,7 +278,7 @@
                         android:textSize="12sp"
                         android:textColor="@color/black"
                         android:text="설정 및 프로필 수정"
-                        android:layout_marginLeft="10dp"/>
+                        android:layout_marginStart="10dp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

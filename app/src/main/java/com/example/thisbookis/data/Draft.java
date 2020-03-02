@@ -14,12 +14,31 @@ public class Draft implements Serializable {
    private String bookTitle;
    private String draftKey;
 
-    public Draft(String title, String content, Boolean shouldShare, String saveTime, String bookISBN, String bookTitle) {
+   public Draft() {
+   }
+
+   public Draft(String title, String content, Boolean shouldShare, String saveTime, String bookISBN, String bookTitle) {
         this.title = title;
         this.content = content;
         this.shouldShare = shouldShare;
         this.saveTime = saveTime;
         this.bookISBN = bookISBN;
+        this.bookTitle = bookTitle;
+    }
+
+    public String getBookISBN() {
+        return bookISBN;
+    }
+
+    public void setBookISBN(String bookISBN) {
+        this.bookISBN = bookISBN;
+    }
+
+    public String getBookTitle() {
+        return bookTitle;
+    }
+
+    public void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
     }
 

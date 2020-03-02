@@ -236,7 +236,12 @@ public class WriteReportActivity extends BaseActivity implements View.OnClickLis
                 }
                 progressOFF();
                 BaseApplication.showCompleteToast(mContext, "독후감 작성 완료!");
-                finish();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, 500);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -454,13 +459,13 @@ public class WriteReportActivity extends BaseActivity implements View.OnClickLis
                 Log.d(TAG, "saveDraft() : 임시저장 성공");
                 BaseApplication.showCompleteToast(mContext, "임시저장 되었습니다.");
                 LinkedHashMap<String, Draft> temporaryStorages;
-                if(user.getTemporaryStroages() == null){
+                if(user.getTemporaryStorages() == null){
                     temporaryStorages = new LinkedHashMap<>();
                 }else{
-                    temporaryStorages = user.getTemporaryStroages();
+                    temporaryStorages = user.getTemporaryStorages();
                 }
                 temporaryStorages.put(draftKey, draft);
-                BaseApplication.userData.setTemporaryStroages(temporaryStorages);
+                BaseApplication.userData.setTemporaryStorages(temporaryStorages);
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -472,6 +477,27 @@ public class WriteReportActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e(TAG, "saveDraft() : 임시저장 실패 " + e.getMessage());
+            }
+        });
+    }
+
+    private void removeDraft(){
+        if(draft == null){
+            return;
+        }
+
+        DatabaseReference draftRef = FirebaseDatabase.getInstance().getReference().child(getString(R.string.firebase_user_data_key))
+                .child(user.getUserId()).child("temporaryStorages").child(draft.getDraftKey());
+
+        draftRef.setValue(null).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "removeDraft() : 임시저장본 삭제 완료");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "removeDraft() : 임시저장본 삭제 실패 " + e.getMessage());
             }
         });
     }
