@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,9 +23,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.thisbookis.ApiClient;
+import com.example.thisbookis.BaseApplication;
 import com.example.thisbookis.R;
+import com.example.thisbookis.RecentSearchesAdapter;
 import com.example.thisbookis.SearchAdapter;
 import com.example.thisbookis.data.SearchResult;
+import com.example.thisbookis.data.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,23 +40,31 @@ import retrofit2.Response;
 
 public class SearchFragment extends Fragment implements TextView.OnEditorActionListener {
 
-    EditText searchEditText;
-    RecyclerView searchRecyclerView;
-    ProgressBar progressBar;
+    static final String TAG = "SearchFragment";
 
-    InputMethodManager imm;
+    private EditText searchEditText;
+    private RecyclerView searchRecyclerView, recentSearchesRecyclerView;
+    private LinearLayout recentSearchLinearLayout;
+    private ProgressBar progressBar;
 
-    int index;
-    int percent = 0;
+    private InputMethodManager imm;
 
-    List<SearchResult.Document> searchResults = new ArrayList<>();
+    private int index;
+    private int percent = 0;
+
+    private User user;
+
+    private List<SearchResult.Document> searchResults = new ArrayList<>();
+
+    private ViewGroup rootView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_search, container, false);
+         rootView = (ViewGroup) inflater.inflate(R.layout.fragment_search, container, false);
 
-        initView(rootView);
         initData();
+        initView(rootView);
+
 
         return rootView;
 
@@ -62,12 +74,19 @@ public class SearchFragment extends Fragment implements TextView.OnEditorActionL
         searchEditText = rootView.findViewById(R.id.search_keyword_et);
         searchRecyclerView = rootView.findViewById(R.id.search_rv);
         progressBar = rootView.findViewById(R.id.search_pb);
+        recentSearchesRecyclerView = rootView.findViewById(R.id.search_recent_searches_rv);
+        recentSearchLinearLayout = rootView.findViewById(R.id.search_recent_searches_ll);
 
+        searchEditText.setOnEditorActionListener(this);
+
+        connectRecentSearchesAdapter();
     }
 
     private void initData(){
-        searchEditText.setOnEditorActionListener(this);
-        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        user = BaseApplication.userData;
+        if(getActivity() != null) {
+            imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        }
 
     }
 
@@ -78,6 +97,10 @@ public class SearchFragment extends Fragment implements TextView.OnEditorActionL
      * **/
     private void search(){
         String keyword = searchEditText.getText().toString();
+        if(keyword.equals("")){
+            BaseApplication.showDialog(getActivity(), "검색어가 없습니다.", null);
+            return;
+        }
         String apiKey = getString(R.string.kakao_api_key);
         Call<SearchResult> call = ApiClient.getInstance().searchService.getBookList(apiKey,keyword,50, index+=1);
 
@@ -88,7 +111,7 @@ public class SearchFragment extends Fragment implements TextView.OnEditorActionL
                     SearchResult searchResult = response.body();
                     if(searchResult.getDocuments().size() == 0){
                         Toast.makeText(getActivity(), "검색된 결과가 없습니다.", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.INVISIBLE);
+                        progressBar.setVisibility(View.GONE);
                         Log.d("SearchFragment", call.request().url().toString());
                         return;
                     }
@@ -109,8 +132,8 @@ public class SearchFragment extends Fragment implements TextView.OnEditorActionL
                     }else{
                         progressBar.setProgress(100);
                         progressBar.setVisibility(View.GONE);
-                        connectAdapter(searchResults);
-                        return;
+
+                        connectSearchResultAdapter(searchResults);
                     }
 
 
@@ -122,18 +145,36 @@ public class SearchFragment extends Fragment implements TextView.OnEditorActionL
 
             @Override
             public void onFailure(Call<SearchResult> call, Throwable t) {
-
+                Log.e(TAG, "search() : 검색 실페" + t.getMessage());
+                BaseApplication.showErrorToast(getActivity(), "오류가 발생했습니다. 다시 시도하여 주세요");
             }
         };
 
         call.enqueue(callback);
     }
 
-    private void connectAdapter(List<SearchResult.Document> documents){
+    private void connectSearchResultAdapter(List<SearchResult.Document> documents){
+        recentSearchLinearLayout.setVisibility(View.GONE);
+        searchRecyclerView.setVisibility(View.VISIBLE);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         searchRecyclerView.setLayoutManager(manager);
         SearchAdapter searchAdapter = new SearchAdapter(getActivity(), documents);
         searchRecyclerView.setAdapter(searchAdapter);
+    }
+
+
+
+    private void connectRecentSearchesAdapter(){
+        if(user.getRecentSearches() == null || searchRecyclerView.getVisibility() == View.VISIBLE){
+            recentSearchLinearLayout.setVisibility(View.GONE);
+            Log.e(TAG, "null");
+            return;
+        }
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
+        recentSearchesRecyclerView.setLayoutManager(layoutManager);
+        RecentSearchesAdapter adapter = new RecentSearchesAdapter(getActivity(),user.getRecentSearches());
+        recentSearchesRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -150,5 +191,12 @@ public class SearchFragment extends Fragment implements TextView.OnEditorActionL
         }
 
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+        initView(rootView);
     }
 }

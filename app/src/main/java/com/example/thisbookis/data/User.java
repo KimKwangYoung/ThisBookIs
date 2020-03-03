@@ -15,8 +15,17 @@ public class User {
     private LinkedHashMap<String, Report> reports;
     private LinkedHashMap<String, MyBook> myBooks;
     private LinkedHashMap<String, Draft> temporaryStorages;
+    private LinkedHashMap<String, RecentSearch> recentSearches;
 
     public User() {
+    }
+
+    public LinkedHashMap<String, RecentSearch> getRecentSearches() {
+        return recentSearches;
+    }
+
+    public void setRecentSearches(Map<String, RecentSearch> recentSearches) {
+        this.recentSearches = new LinkedHashMap<>(recentSearches);
     }
 
     public LinkedHashMap<String, Draft> getTemporaryStorages() {
