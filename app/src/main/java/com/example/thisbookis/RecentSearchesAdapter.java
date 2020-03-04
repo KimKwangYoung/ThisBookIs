@@ -1,10 +1,13 @@
 package com.example.thisbookis;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,17 +18,22 @@ import com.example.thisbookis.data.RecentSearch;
 import com.example.thisbookis.data.SearchResult;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class RecentSearchesAdapter extends RecyclerView.Adapter<RecentSearchesAdapter.Viewholder> {
 
+    static final String TAG = "RecentSearchesAdapter";
+
     Context mContext;
-    LinkedHashMap<String, RecentSearch> recentSearches;
-    ArrayList<RecentSearch> recentSearchesList;
+    private LinkedHashMap<String, RecentSearch> recentSearches;
+    private ArrayList<RecentSearch> recentSearchesList;
 
     public RecentSearchesAdapter(Context mContext, LinkedHashMap<String, RecentSearch> recentSearches) {
         this.mContext = mContext;
@@ -59,8 +67,9 @@ public class RecentSearchesAdapter extends RecyclerView.Adapter<RecentSearchesAd
         return recentSearches.size();
     }
 
-    class Viewholder extends RecyclerView.ViewHolder{
+    class Viewholder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        LinearLayout linearLayout;
         ImageView bookThumbnailImageView;
         TextView bookTitleTextView, bookAuthorsTextView;
 
@@ -70,6 +79,9 @@ public class RecentSearchesAdapter extends RecyclerView.Adapter<RecentSearchesAd
             bookThumbnailImageView = itemView.findViewById(R.id.grid_item_thumbnail_iv);
             bookTitleTextView = itemView.findViewById(R.id.grid_item_title_tv);
             bookAuthorsTextView = itemView.findViewById(R.id.grid_item_authors_tv);
+            linearLayout = itemView.findViewById(R.id.grid_item_ll);
+
+            linearLayout.setOnClickListener(this);
         }
 
         private void setItem(RecentSearch document){
@@ -78,6 +90,53 @@ public class RecentSearchesAdapter extends RecyclerView.Adapter<RecentSearchesAd
             bookTitleTextView.setText(document.getTitle());
             String authors = document.getAuthors();
             bookAuthorsTextView.setText(BaseApplication.replaceString(authors));
+        }
+
+        private void getBookData(){
+            RecentSearch r = recentSearchesList.get(getAdapterPosition());
+            String isbn = r.getISBN();
+            String title = r.getTitle();
+            isbn = isbn.substring(isbn.lastIndexOf(" ") + 1);
+            String authorizationKey = mContext.getString(R.string.kakao_api_key);
+            Call<SearchResult> call = ApiClient.getInstance().searchService.getBookList(authorizationKey, isbn, 50, 1);
+            Callback<SearchResult> callback = new Callback<SearchResult>() {
+                @Override
+                public void onResponse(Call<SearchResult> call, Response<SearchResult> response) {
+                    if(response.isSuccessful()){
+                        SearchResult searchResult = response.body();
+                        List<SearchResult.Document> documentList = searchResult.getDocuments();
+                        SearchResult.Document bookDocument = null;
+                        for(SearchResult.Document d : documentList){
+                            if(d.getTitle().equals(title)){
+                                bookDocument = d;
+                                break;
+                            }
+                        }
+
+                        Intent intent = new Intent(mContext, BookContentsActivity.class);
+                        intent.putExtra("book", bookDocument);
+                        mContext.startActivity(intent);
+
+                    }else{
+                        BaseApplication.showErrorToast(mContext, "책 정보를 읽어오지 못했습니다. 다시 시도하여 주세요");
+                        Log.e(TAG, "Retrofit Error :: " + response.errorBody());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SearchResult> call, Throwable t) {
+                    Log.e(TAG, "getBookData() : isCanceled : " + call.isCanceled() + " Error Message : " + t.getMessage());
+                }
+            };
+
+            call.enqueue(callback);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if(view.getId() == R.id.grid_item_ll){
+                getBookData();
+            }
         }
     }
 }
