@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
-                    case R.id.my_page_tab:
+                    case R.id.home_tab:
                         moveMyPage();
                         return true;
                     case R.id.search_tab:

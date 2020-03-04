@@ -24,4 +24,8 @@
     <string name="more_view_desc">더보기  ></string>
     <string name="my_draft">임시저장</string>
     <string name="recent_searches">최근 검색한 책</string>
+
+    <string name="search_book">책 검색</string>
+    <string name="home">홈</string>
+    <string name="feed">피드</string>
 </resources>
