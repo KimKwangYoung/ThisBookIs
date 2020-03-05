@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.thisbookis.fragment.MyPageFragment;
-import com.example.thisbookis.fragment.RankingFragment;
+import com.example.thisbookis.fragment.FeedFragment;
 import com.example.thisbookis.fragment.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void moveRanking(){
         if(fragmentRanking == null){
-            fragmentRanking = new RankingFragment();
+            fragmentRanking = new FeedFragment();
             fragmentManager.beginTransaction().add(R.id.main_fragment_container, fragmentRanking).commit();
         }
 

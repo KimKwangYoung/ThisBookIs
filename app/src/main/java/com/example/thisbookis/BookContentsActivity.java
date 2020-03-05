@@ -1,6 +1,7 @@
 package com.example.thisbookis;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,13 +28,17 @@ import com.example.thisbookis.data.MyBook;
 import com.example.thisbookis.data.Report;
 import com.example.thisbookis.data.SearchResult;
 import com.example.thisbookis.data.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import org.jsoup.Jsoup;
@@ -44,7 +49,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class BookContentsActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -255,28 +262,33 @@ public class BookContentsActivity extends AppCompatActivity implements View.OnCl
     /**
      * 책 읽은 유저 리스트에 추가
      */
-    private void addUserToReadUsers(Book book){
-        LinkedHashMap<String, String> readUsers;
+    private void addUserToReadUsers(){
+        DatabaseReference bookRef = FirebaseDatabase.getInstance().getReference()
+                .child(getString(R.string.firebase_book_data_key)).child(bookData.getIsbn());
 
-        if(book.getReadUsers() != null) {
-            readUsers = book.getReadUsers();
-        }else{
-            readUsers = new LinkedHashMap<>();
-        }
-
-        readUsers.put(BaseApplication.userData.getUserId(), BaseApplication.userData.getNickname());
-
-        DatabaseReference bookRef = FirebaseDatabase.getInstance().getReference().child("book").child(book.getIsbn());
-        bookRef.child("readUsers").setValue(readUsers).addOnSuccessListener(new OnSuccessListener<Void>() {
+        bookRef.runTransaction(new Transaction.Handler() {
+            @NonNull
             @Override
-            public void onSuccess(Void aVoid) {
-                addBookToMyBooks();
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Book book = mutableData.getValue(Book.class);
+                if(book == null){
+                    return Transaction.success(mutableData);
+                }
+
+                User me = BaseApplication.userData;
+                book.setReadUserCount(book.getReadUserCount() + 1);
+                Map<String, Boolean> readUsers = book.getReadUsers();
+                readUsers.put(me.getUserId(), true);
+                book.setReadUsers(readUsers);
+
+                mutableData.setValue(book);
+                return Transaction.success(mutableData);
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(mContext, "읽은 책으로 추가 실패", Toast.LENGTH_SHORT).show();
-                Log.e("addUserToReadUsers", e.getMessage());
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                addBookToMyBooks();
+                Log.d(TAG, "addBookToFirebase() : " + databaseError);
             }
         });
     }
@@ -286,22 +298,20 @@ public class BookContentsActivity extends AppCompatActivity implements View.OnCl
         book.setIsbn(apiBook.getIsbn());
         book.setThumbnail(apiBook.getThumbnail());
         book.setTitle(apiBook.getTitle());
-        LinkedHashMap<String, String> readUsers = new LinkedHashMap<>();
-        readUsers.put(BaseApplication.userData.getUserId(), BaseApplication.userData.getNickname());
+        Map<String, Boolean> readUsers = new HashMap<>();
+        readUsers.put(BaseApplication.userData.getUserId(), true);
         book.setReadUsers(readUsers);
+        book.setReadUserCount(1);
+        String authors = Arrays.deepToString(apiBook.getAuthors());
+        book.setAuthors(authors);
 
-        DatabaseReference bookRef = FirebaseDatabase.getInstance().getReference().child("book");
-        bookRef.child(apiBook.getIsbn()).setValue(book).addOnSuccessListener(new OnSuccessListener<Void>() {
+        DatabaseReference bookRef = FirebaseDatabase.getInstance().getReference()
+                .child(getString(R.string.firebase_book_data_key)).child(book.getIsbn());
+
+        bookRef.setValue(book).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onSuccess(Void aVoid) {
+            public void onComplete(@NonNull Task<Void> task) {
                 addBookToMyBooks();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressBar.setVisibility(View.GONE);
-                BaseApplication.showErrorToast(mContext, "책 추가 실패");
-                Log.e("BookContentsActivity", e.getMessage());
             }
         });
 
@@ -323,8 +333,12 @@ public class BookContentsActivity extends AppCompatActivity implements View.OnCl
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm");
         String registrationTime = sdf.format(today);
         myBook.setRegistrationTime(registrationTime);
-
-        LinkedHashMap<String, MyBook> myBooks = BaseApplication.userData.getMyBooks();
+        LinkedHashMap<String, MyBook> myBooks;
+        if(BaseApplication.userData.getMyBooks() != null) {
+            myBooks = BaseApplication.userData.getMyBooks();
+        }else{
+            myBooks = new LinkedHashMap<>();
+        }
         myBooks.put(apiBook.getIsbn(), myBook);
         BaseApplication.userData.setMyBooks(myBooks);
 
@@ -403,7 +417,8 @@ public class BookContentsActivity extends AppCompatActivity implements View.OnCl
                 break;
 
             case R.id.book_contents_fab_add_book:
-                if(BaseApplication.userData.getMyBooks().containsKey(apiBook.getIsbn())){
+                User me = BaseApplication.userData;
+                if(me.getMyBooks() != null && me.getMyBooks().containsKey(apiBook.getIsbn())){
                     Toast.makeText(mContext, "이미 책이 서재에 존재합니다.", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.INVISIBLE);
                     break;
@@ -412,7 +427,7 @@ public class BookContentsActivity extends AppCompatActivity implements View.OnCl
                 if(bookData == null){
                     addBookToFirebase();
                 }else{
-                    addUserToReadUsers(bookData);
+                    addUserToReadUsers();
                 }
                 break;
         }

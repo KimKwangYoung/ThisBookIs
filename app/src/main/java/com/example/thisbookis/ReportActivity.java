@@ -1,6 +1,7 @@
 package com.example.thisbookis;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -30,6 +30,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -57,9 +59,10 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     String bookInfo;
     boolean shouldShare = false;
     boolean isLike;
-    LinkedHashMap<String, String> likes;
+
     LinkedHashMap<String, Comment> commentMap;
     ArrayList<Comment> commentsList;
+    Map<String, Boolean> likes;
 
     LinearLayout hideCommnetLinearLayout;
     TextView reportTitleTextView, reportContentsTextView, bookInfoTextView
@@ -106,10 +109,10 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initData(){
-        if(reportData.getLikes() == null){
-            likes = new LinkedHashMap<>();
+        if(reportData.getLike() == null){
+            likes = new HashMap<>();
         }else{
-            likes = reportData.getLikes();
+            likes = reportData.getLike();
         }
 
         if(reportData.getComments() == null){
@@ -152,19 +155,15 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
 
         String likeCnt, commentCnt;
 
-        if(reportData.getLikes() != null){
-            likeCnt = Integer.toString(reportData.getLikes().size());
-        }else{
-            likeCnt = "0";
-        }
-
         if (reportData.getComments() != null){
             commentCnt = Integer.toString(reportData.getComments().size());
         }else{
             commentCnt = "0";
         }
 
+        likeCnt = Integer.toString(reportData.getLikeCount());
         likeCntTextView.setText(likeCnt);
+
         commentCntTextView.setText(commentCnt);
 
         if(!shouldShare){
@@ -244,38 +243,42 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
 
         User me = BaseApplication.userData;
 
-        if(likes == null){
-            likes = new LinkedHashMap<>();
-        }
-
-        if(likes.containsKey(me.getUserId())){
-            likes.remove(me.getUserId());
-            isLike = false;
-        }else{
-            likes.put(me.getUserId(), me.getUserId());
-            isLike = true;
-        }
-
-        DatabaseReference reportLikesRef = reportRef.child("likes");
-
-        reportLikesRef.setValue(likes).addOnSuccessListener(new OnSuccessListener<Void>() {
+        reportRef.runTransaction(new Transaction.Handler() {
+            @NonNull
             @Override
-            public void onSuccess(Void aVoid) {
-                if(isLike){
-                    likeButton.setImageDrawable(getDrawable(R.drawable.ic_like_true));
-                    likeCntTextView.setText(Integer.toString(likes.size()));
-                }else{
-                    likeButton.setImageDrawable(getDrawable(R.drawable.ic_like_false));
-                    likeCntTextView.setText(Integer.toString(likes.size()));
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                Report r = mutableData.getValue(Report.class);
+                if(r == null){
+                    return Transaction.success(mutableData);
                 }
 
-                Log.d(TAG, "like() : 좋아요 적용 완료");
+                Log.d(TAG, "doTransaction");
+                if (likes.containsKey(me.getUserId())){
+                    r.setLikeCount(r.getLikeCount()-1);
+                    likes.remove(me.getUserId());
+                    r.setLike(likes);
+                } else {
+                    r.setLikeCount(r.getLikeCount()+1);
+                    likes.put(me.getUserId(), true);
+                    r.setLike(likes);
+                }
+
+                reportData = r;
+                mutableData.setValue(r);
+                return Transaction.success(mutableData);
             }
-        }).addOnFailureListener(new OnFailureListener() {
+
             @Override
-            public void onFailure(@NonNull Exception e) {
-                //TODO: 좋아요 초기화 작업
-                Log.e(TAG, "like() : 좋아요 적용 실패" + e.getMessage());
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                if(likes.containsKey(me.getUserId())){
+                    likeButton.setImageResource(R.drawable.ic_like_true);
+                }else{
+                    likeButton.setImageResource(R.drawable.ic_like_false);
+                }
+                String likeCnt = Integer.toString(reportData.getLikeCount());
+                likeCntTextView.setText(likeCnt);
+
+                Log.d(TAG, "like() : " + databaseError);
             }
         });
 

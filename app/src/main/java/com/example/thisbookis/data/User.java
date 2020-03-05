@@ -12,10 +12,10 @@ public class User {
     private String profileURL;
     private String profilePath;
     private boolean shouldShareReport;
-    private LinkedHashMap<String, Report> reports;
-    private LinkedHashMap<String, MyBook> myBooks;
-    private LinkedHashMap<String, Draft> temporaryStorages;
-    private LinkedHashMap<String, RecentSearch> recentSearches;
+    private LinkedHashMap<String, Report> reports = new LinkedHashMap<>();
+    private LinkedHashMap<String, MyBook> myBooks = new LinkedHashMap<>();
+    private LinkedHashMap<String, Draft> temporaryStorages = new LinkedHashMap<>();
+    private LinkedHashMap<String, RecentSearch> recentSearches = new LinkedHashMap<>();
 
     public User() {
     }

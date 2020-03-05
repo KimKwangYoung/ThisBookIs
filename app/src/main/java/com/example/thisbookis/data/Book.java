@@ -2,18 +2,20 @@ package com.example.thisbookis.data;
 
 import androidx.annotation.Keep;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Keep
 public class Book {
-    String title;
-    String isbn;
-    String thumbnail;
-    String url;
-    LinkedHashMap<String, String> readUsers;
-    LinkedHashMap<String, Report> reportsOfBook;
-
+   private String title;
+   private String isbn;
+   private String thumbnail;
+   private String url;
+   private String authors;
+   private Map<String, Boolean> readUsers = new HashMap<>();
+   private LinkedHashMap<String, Report> reportsOfBook;
+   private int readUserCount = 0;
 
     public Book() {
     }
@@ -50,12 +52,20 @@ public class Book {
         this.thumbnail = thumbnail;
     }
 
-    public LinkedHashMap<String, String> getReadUsers() {
+    public Map<String, Boolean> getReadUsers() {
         return readUsers;
     }
 
-    public void setReadUsers(Map<String, String> readUsers) {
-        this.readUsers = new LinkedHashMap<>(readUsers);
+    public void setReadUsers(Map<String, Boolean> readUsers) {
+        this.readUsers = readUsers;
+    }
+
+    public int getReadUserCount() {
+        return readUserCount;
+    }
+
+    public void setReadUserCount(int readUserCount) {
+        this.readUserCount = readUserCount;
     }
 
     public LinkedHashMap<String, Report> getReportsOfBook() {
@@ -64,5 +74,13 @@ public class Book {
 
     public void setReportsOfBook(Map<String, Report> reportsOfBook) {
         this.reportsOfBook = new LinkedHashMap<>(reportsOfBook);
+    }
+
+    public String getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(String authors) {
+        this.authors = authors;
     }
 }

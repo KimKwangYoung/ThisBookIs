@@ -3,7 +3,7 @@ package com.example.thisbookis.data;
 import androidx.annotation.Keep;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -20,10 +20,19 @@ public class Report implements Serializable{
     private String writeTime;
     private String reportKey;
     private LinkedHashMap<String, Comment> comments;
-    private LinkedHashMap<String, String> likes;
+    private Map<String, Boolean> like = new HashMap<>();
+    private int likeCount = 0;
 
     public Report(){
 
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
     }
 
     public LinkedHashMap<String, Comment> getComments() {
@@ -34,12 +43,12 @@ public class Report implements Serializable{
         this.comments = new LinkedHashMap<>(comments);
     }
 
-    public LinkedHashMap<String, String> getLikes() {
-        return likes;
+    public Map<String, Boolean> getLike() {
+        return like;
     }
 
-    public void setLikes(Map<String, String> likes) {
-        this.likes = new LinkedHashMap<>(likes);
+    public void setLike(Map<String, Boolean> like) {
+        this.like = like;
     }
 
     public String getBookThumbnail() {
