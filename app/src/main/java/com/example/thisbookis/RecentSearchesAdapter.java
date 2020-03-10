@@ -97,39 +97,7 @@ public class RecentSearchesAdapter extends RecyclerView.Adapter<RecentSearchesAd
             String isbn = r.getISBN();
             String title = r.getTitle();
             isbn = isbn.substring(isbn.lastIndexOf(" ") + 1);
-            String authorizationKey = mContext.getString(R.string.kakao_api_key);
-            Call<SearchResult> call = ApiClient.getInstance().searchService.getBookList(authorizationKey, isbn, 50, 1);
-            Callback<SearchResult> callback = new Callback<SearchResult>() {
-                @Override
-                public void onResponse(Call<SearchResult> call, Response<SearchResult> response) {
-                    if(response.isSuccessful()){
-                        SearchResult searchResult = response.body();
-                        List<SearchResult.Document> documentList = searchResult.getDocuments();
-                        SearchResult.Document bookDocument = null;
-                        for(SearchResult.Document d : documentList){
-                            if(d.getTitle().equals(title)){
-                                bookDocument = d;
-                                break;
-                            }
-                        }
-
-                        Intent intent = new Intent(mContext, BookContentsActivity.class);
-                        intent.putExtra("book", bookDocument);
-                        mContext.startActivity(intent);
-
-                    }else{
-                        BaseApplication.showErrorToast(mContext, "책 정보를 읽어오지 못했습니다. 다시 시도하여 주세요");
-                        Log.e(TAG, "Retrofit Error :: " + response.errorBody());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<SearchResult> call, Throwable t) {
-                    Log.e(TAG, "getBookData() : isCanceled : " + call.isCanceled() + " Error Message : " + t.getMessage());
-                }
-            };
-
-            call.enqueue(callback);
+            BaseApplication.moveToBookContentActivity(mContext, isbn, title);
         }
 
         @Override

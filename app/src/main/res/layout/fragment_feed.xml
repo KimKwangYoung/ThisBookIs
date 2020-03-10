@@ -4,46 +4,278 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragment.FeedFragment">
+    tools:mContext=".fragment.FeedFragment">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:padding="20dp">
+
             <LinearLayout
-                android:id="@+id/feed_releated_report_ll"
-                android:orientation="vertical"
+                android:id="@+id/feed_top_rank_book_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/feed_item_background"
                 android:elevation="5dp"
-                android:background="@color/white"
-                android:padding="5dp">
+                android:orientation="vertical"
+                android:padding="15dp">
+
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
+                    android:fontFamily="@font/cafe24ohsquare"
+                    android:text="@string/app_name"
+                    android:textColor="@color/mainColor"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/cafe24ohsquare"
+                    android:gravity="center"
+                    android:text="@string/top_rank_book_card_desc"
                     android:textColor="@color/black"
-                    android:text="@string/top_rank_book_card_desc"/>
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/feed_top_rank_book_vp"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp">
-                </androidx.viewpager.widget.ViewPager>
+                    android:layout_height="155dp"/>
+
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/feed_top_rank_book_tl"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="15dp"
                     android:layout_gravity="center_horizontal"
                     app:tabBackground="@drawable/selector"
-                    app:tabIndicatorHeight="0dp"
-                    />
+                    app:tabIndicatorHeight="0dp" />
+            </LinearLayout>
+            <!-- 최근 독후감관련 다른 독후감 부분 -->
+            <LinearLayout
+                android:id="@+id/feed_releated_report_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/feed_item_background"
+                android:elevation="5dp"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/feed_releated_report_book_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/cafe24ohsquare"
+                    android:textColor="@color/mainColor"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/cafe24ohsquare"
+                    android:text="@string/releated_report_card_title"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/feed_releated_report_profile_iv"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="7dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/feed_releated_report_nickname_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/feed_releated_report_like_cnt_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/line_background"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/line_background" />
+
+                <TextView
+                    android:id="@+id/feed_releated_report_title_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/feed_releated_report_content_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6dp"
+                    android:maxLines="8"
+                    android:textColor="#464646" />
+            </LinearLayout>
+            <!-- 베스트 셀러 부분 -->
+            <LinearLayout
+                android:id="@+id/feed_best_seller_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/feed_item_background"
+                android:elevation="5dp"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/cafe24ohsquare"
+                    android:text="@string/top3"
+                    android:textColor="@color/mainColor"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/cafe24ohsquare"
+                    android:text="@string/best_seller"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/feed_best_seller_vp"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp"/>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/feed_best_seller_tl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_horizontal"
+                    app:tabBackground="@drawable/selector"
+                    app:tabIndicatorHeight="0dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="@string/copyright"
+                    android:textSize="11sp" />
+            </LinearLayout>
+            <!-- 인기 있는 독후감 부분 -->
+            <LinearLayout
+                android:id="@+id/feed_top_rank_report_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/feed_item_background"
+                android:elevation="5dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/cafe24ohsquare"
+                    android:text="@string/app_name"
+                    android:textColor="@color/mainColor"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/cafe24ohsquare"
+                    android:text="@string/top_rank_report_card_desc"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/feed_top_rank_report_profile_iv"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="7dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/feed_top_rank_report_nickname_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/feed_top_rank_report_like_cnt_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/line_background"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/line_background" />
+
+                <TextView
+                    android:id="@+id/feed_top_rank_report_title_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/feed_top_rank_report_content_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6dp"
+                    android:maxLines="8"
+                    android:ellipsize="end"
+                    android:textColor="#464646" />
             </LinearLayout>
         </LinearLayout>
-
     </FrameLayout>
 
 

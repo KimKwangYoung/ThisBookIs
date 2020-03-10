@@ -18,8 +18,6 @@ import com.example.thisbookis.data.MyBook;
 import com.example.thisbookis.data.SearchResult;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -96,7 +94,7 @@ public class MyBooksAdpater extends RecyclerView.Adapter<MyBooksAdpater.Viewhold
             String title = myBooksArray.get(getAdapterPosition()).getTitle();
             String keyword = isbn.substring(isbn.lastIndexOf(" ") + 1);
             String authorizationKey = context.getString(R.string.kakao_api_key);
-            Call<SearchResult> call = ApiClient.getInstance().searchService.getBookList(authorizationKey, keyword, 50, 1);
+            Call<SearchResult> call = KakaoApiClient.getInstance().searchService.getBookList(authorizationKey, keyword, 50, 1);
             Callback<SearchResult> callback = new Callback<SearchResult>() {
                 @Override
                 public void onResponse(Call<SearchResult> call, Response<SearchResult> response) {

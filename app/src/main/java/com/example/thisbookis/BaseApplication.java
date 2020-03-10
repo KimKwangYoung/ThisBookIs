@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.thisbookis.data.SearchResult;
 import com.example.thisbookis.data.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +31,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.kakao.auth.KakaoSDK;
 import com.pd.chocobar.ChocoBar;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BaseApplication extends Application {
 
@@ -265,6 +272,50 @@ public class BaseApplication extends Application {
 
     public String naverSecretKey(){
         return naverSecretKey;
+    }
+
+    public static void moveToBookContentActivity(Context context, String isbn, String title){
+        String authorizationKey = context.getString(R.string.kakao_api_key);
+        Call<SearchResult> call = KakaoApiClient.getInstance().searchService.getBookList(authorizationKey, isbn, 50, 1);
+        Callback<SearchResult> callback = new Callback<SearchResult>() {
+            @Override
+            public void onResponse(Call<SearchResult> call, Response<SearchResult> response) {
+                if(response.isSuccessful()){
+                    SearchResult searchResult = response.body();
+                    List<SearchResult.Document> documentList = searchResult.getDocuments();
+                    SearchResult.Document bookDocument = null;
+                    if(documentList.size() == 1){
+                        bookDocument = documentList.get(0);
+                    }else{
+                        for(SearchResult.Document d : documentList){
+                            if(d.getTitle().equals(title)){
+                                bookDocument = d;
+                                break;
+                            }
+                        }
+                    }//End if
+
+                    if(bookDocument == null){
+                        showInfoToast(context, "책 정보를 찾지 못했습니다. 검색창에서 검색하여 주세요");
+                        return;
+                    }
+                    Intent intent = new Intent(context, BookContentsActivity.class);
+                    intent.putExtra("book", bookDocument);
+                    context.startActivity(intent);
+
+                }else{
+                    BaseApplication.showErrorToast(context, "책 정보를 읽어오지 못했습니다. 다시 시도하여 주세요");
+                    Log.e(TAG, "Retrofit Error :: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SearchResult> call, Throwable t) {
+                Log.e(TAG, "getBookData() : isCanceled : " + call.isCanceled() + " Error Message : " + t.getMessage());
+            }
+        };
+
+        call.enqueue(callback);
     }
 
 }

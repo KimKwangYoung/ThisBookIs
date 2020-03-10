@@ -19,14 +19,15 @@ import com.example.thisbookis.data.Report;
 import com.example.thisbookis.data.User;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class ReportOfBookContentsAdapater extends RecyclerView.Adapter<ReportOfBookContentsAdapater.Viewholder> {
 
     Context mContext;
     private ArrayList<Report> reports;
-    private ArrayList<User> users;
+    private LinkedHashMap<String, User> users;
 
-    public ReportOfBookContentsAdapater(Context mContext, ArrayList<Report> reports, ArrayList<User> users) {
+    public ReportOfBookContentsAdapater(Context mContext, ArrayList<Report> reports, LinkedHashMap<String, User> users) {
         this.mContext = mContext;
         this.reports = reports;
         this.users = users;
@@ -43,7 +44,7 @@ public class ReportOfBookContentsAdapater extends RecyclerView.Adapter<ReportOfB
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
         Report report = reports.get(position);
-        User user = users.get(position);
+        User user = users.get(report.getWriter());
         holder.setItem(report, user);
     }
 

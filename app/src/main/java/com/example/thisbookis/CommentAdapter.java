@@ -54,7 +54,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
 
         ImageView profileImageView;
         TextView nicknameTextView, contentsTextView, addTimeTextView;
-        DatabaseReference userRef;
         User user;
 
         public Viewholder(@NonNull View itemView) {
@@ -76,23 +75,5 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Viewhold
             contentsTextView.setText(comment.getContent());
             addTimeTextView.setText(comment.getTimeAddComments());
         }
-
-//        private void getUser(Comment comment){
-//            userRef = FirebaseDatabase.getInstance().getReference().child(mContext.getString(R.string.firebase_user_data_key))
-//                    .child(comment.getWriter());
-//
-//            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                    user = dataSnapshot.getValue(User.class);
-//                    setItem(comment, user);
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                }
-//            });
-//        }
     }
 }

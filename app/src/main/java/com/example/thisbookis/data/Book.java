@@ -14,7 +14,7 @@ public class Book {
    private String url;
    private String authors;
    private Map<String, Boolean> readUsers = new HashMap<>();
-   private LinkedHashMap<String, Report> reportsOfBook;
+   private LinkedHashMap<String, Report> reportsOfBook = new LinkedHashMap<>();
    private int readUserCount = 0;
 
     public Book() {

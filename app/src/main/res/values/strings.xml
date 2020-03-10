@@ -29,5 +29,12 @@
     <string name="home">홈</string>
     <string name="feed">피드</string>
 
-    <string name="top_rank_book_card_desc">유저들이 가장 많이 읽은책</string>
+    <string name="top_rank_book_card_desc">유저들이 많이 읽은책</string>
+    <string name="top_rank_report_card_desc">유저들이 가장 좋아하는 독후감</string>
+    <string name="releated_report_card_title">다른 유저의 생각은?</string>
+    <string name="best_seller">베스트셀러</string>
+    <string name="copyright">출처 : 인터파크</string>
+    <string name="top3">TOP 3</string>
+
+    <string name="inter_park_api_key">771E0F8039AED93A550A2E5AF9B584422BCE5DADA5A58066811AADA99D972FA1</string>
 </resources>

@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.thisbookis.ApiClient;
+import com.example.thisbookis.KakaoApiClient;
 import com.example.thisbookis.BaseApplication;
 import com.example.thisbookis.R;
 import com.example.thisbookis.RecentSearchesAdapter;
@@ -102,7 +102,7 @@ public class SearchFragment extends Fragment implements TextView.OnEditorActionL
             return;
         }
         String apiKey = getString(R.string.kakao_api_key);
-        Call<SearchResult> call = ApiClient.getInstance().searchService.getBookList(apiKey,keyword,50, index+=1);
+        Call<SearchResult> call = KakaoApiClient.getInstance().searchService.getBookList(apiKey,keyword,50, index+=1);
 
         Callback<SearchResult> callback = new Callback<SearchResult>() {
             @Override

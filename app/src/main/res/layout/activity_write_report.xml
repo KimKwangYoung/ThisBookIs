@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".WriteReportActivity">
+    tools:mContext=".WriteReportActivity">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,13 +18,13 @@
             android:src="@drawable/ic_keyboard_arrow_left_black_24dp"/>
         <TextView
             android:id="@+id/write_report_book_title_tv"
-            android:layout_width="150dp"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="13sp"
-            android:fontFamily="@font/yangjin"
+            android:fontFamily="@font/cafe24ohsquare"
             android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
+            android:gravity="center_horizontal|center_vertical"
             android:maxLines="1"
             android:ellipsize="end"
             android:padding="5dp"/>

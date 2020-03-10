@@ -100,7 +100,7 @@ public class DraftListAdapter extends RecyclerView.Adapter<DraftListAdapter.View
             String bookTitle = drafts.get(getAdapterPosition()).getBookTitle();
             String keyword = isbn.substring(isbn.lastIndexOf(" ") + 1);
             String authorizationKey = mContext.getString(R.string.kakao_api_key);
-            Call<SearchResult> call = ApiClient.getInstance().searchService.getBookList(authorizationKey, keyword, 50, 1);
+            Call<SearchResult> call = KakaoApiClient.getInstance().searchService.getBookList(authorizationKey, keyword, 50, 1);
             Callback<SearchResult> callback = new Callback<SearchResult>() {
                 @Override
                 public void onResponse(Call<SearchResult> call, Response<SearchResult> response) {

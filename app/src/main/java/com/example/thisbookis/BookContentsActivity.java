@@ -171,6 +171,7 @@ public class BookContentsActivity extends AppCompatActivity implements View.OnCl
 
         ArrayList<Report> reports = new ArrayList<>();
         ArrayList<User> users = new ArrayList<>();
+        LinkedHashMap<String, User> usersMap = new LinkedHashMap<>();
 
         if(bookData.getReportsOfBook() == null){
             reportsRecyclerView.setVisibility(View.GONE);
@@ -194,12 +195,12 @@ public class BookContentsActivity extends AppCompatActivity implements View.OnCl
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     for(Report r : reports){
                         if(ds.getKey().equals(r.getWriter())){
-                            users.add(ds.getValue(User.class));
+                            usersMap.put(ds.getKey(), ds.getValue(User.class));
                         }
                     }
                 }//End for
 
-                connectReportsAdapter(reports, users);
+                connectReportsAdapter(reports, usersMap);
             }
 
             @Override
@@ -210,10 +211,10 @@ public class BookContentsActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-    private void connectReportsAdapter(ArrayList<Report> reports, ArrayList<User> users) {
+    private void connectReportsAdapter(ArrayList<Report> reports, LinkedHashMap usersMap) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         reportsRecyclerView.setLayoutManager(layoutManager);
-        ReportOfBookContentsAdapater adapater = new ReportOfBookContentsAdapater(mContext, reports, users);
+        ReportOfBookContentsAdapater adapater = new ReportOfBookContentsAdapater(mContext, reports, usersMap);
         reportsRecyclerView.setAdapter(adapater);
     }
 
@@ -244,7 +245,8 @@ public class BookContentsActivity extends AppCompatActivity implements View.OnCl
      */
     private void searchBook(){
 
-        DatabaseReference bookRef = FirebaseDatabase.getInstance().getReference().child("book").child(apiBook.getIsbn());
+        DatabaseReference bookRef = FirebaseDatabase.getInstance().getReference().child(getString(R.string.firebase_book_data_key))
+                .child(apiBook.getIsbn());
         bookRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -403,6 +405,7 @@ public class BookContentsActivity extends AppCompatActivity implements View.OnCl
     public void onBackPressed() {
         finish();
         overridePendingTransition(R.anim.anim_slide_stay, R.anim.anim_slide_down);
+        Glide.with(mContext).clear(thumbnailImageView);
     }
 
     @Override
@@ -450,4 +453,6 @@ public class BookContentsActivity extends AppCompatActivity implements View.OnCl
             isFabOpen = true;
         }
     }
+
+
 }
