@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.thisbookis.AppInfoActivity;
 import com.example.thisbookis.BaseActivity;
 import com.example.thisbookis.BaseApplication;
 import com.example.thisbookis.DraftListActivity;
@@ -73,7 +74,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         ImageView profileImageView;
         TextView profileNickNameTextView, myBooksCountTextView, myReportsCountTextView
                 , draftTitleTextView, draftContentTextView, draftMoreViewButton;
-        LinearLayout settingButton, myBooksButton, myReportsButton, draftHideLinearLayout, draftLinearLayout;
+        LinearLayout settingButton, myBooksButton, appInfoButton, myReportsButton, draftHideLinearLayout, draftLinearLayout;
 
         profileImageView = rootView.findViewById(R.id.my_page_profile_image_iv);
         profileNickNameTextView = rootView.findViewById(R.id.my_page_nickname_tv);
@@ -88,12 +89,14 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         draftHideLinearLayout = rootView.findViewById(R.id.my_page_draft_hide_ll);
         draftLinearLayout = rootView.findViewById(R.id.my_page_draft_ll);
         draftMoreViewButton = rootView.findViewById(R.id.my_page_draft_more_view_btn);
+        appInfoButton = rootView.findViewById(R.id.home_app_info_ll);
 
         logoutButton.setOnClickListener(this);
         settingButton.setOnClickListener(this);
         myBooksButton.setOnClickListener(this);
         myReportsButton.setOnClickListener(this);
         draftMoreViewButton.setOnClickListener(this);
+        appInfoButton.setOnClickListener(this);
 
         RequestOptions options = BaseApplication.profileImageOptions;
         Glide.with(fragment).load(userData.getProfileURL()).apply(options).into(profileImageView);
@@ -185,10 +188,14 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
     private void redirectLoginActivity(){
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
-        getActivity().finish();
+        if(getActivity() != null){
+            getActivity().finish();
+        }
     }
 
-    /* ############################## 로그아웃 코드  ##############################*/
+    /**
+     * ############################## 로그아웃 코드  ##############################
+     * */
 
     @Override
     public void onClick(View view) {
@@ -212,6 +219,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
             case R.id.my_page_draft_more_view_btn:
                 Intent intent = new Intent(getActivity(), DraftListActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.home_app_info_ll:
+                Intent appInfoIntent = new Intent(getActivity(), AppInfoActivity.class);
+                startActivity(appInfoIntent);
                 break;
 
         }

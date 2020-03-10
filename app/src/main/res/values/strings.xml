@@ -36,5 +36,8 @@
     <string name="copyright">출처 : 인터파크</string>
     <string name="top3">TOP 3</string>
 
+    <string name="app_info_button_text">어플리케이션 정보</string>
+    <string name="app_info">개발자 : 김광영\n버전 : 1.0.0\n개발자 이메일 : kwangyoung.dev@gmail.com</string>
+
     <string name="inter_park_api_key">771E0F8039AED93A550A2E5AF9B584422BCE5DADA5A58066811AADA99D972FA1</string>
 </resources>

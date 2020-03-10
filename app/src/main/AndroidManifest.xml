@@ -10,12 +10,13 @@
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_book"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".DraftListActivity"></activity>
+        <activity android:name=".AppInfoActivity"/>
+        <activity android:name=".DraftListActivity" />
         <activity android:name=".ReportActivity" />
         <activity android:name=".MyReportsActivity" />
         <activity android:name=".MyBooksActivity" />
@@ -33,7 +34,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

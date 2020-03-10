@@ -280,6 +280,28 @@
                         android:text="설정 및 프로필 수정"
                         android:layout_marginStart="10dp"/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_background"/>
+                <LinearLayout
+                    android:id="@+id/home_app_info_ll"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_info"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:text="@string/app_info_button_text"
+                        android:textSize="12sp"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     <Button
