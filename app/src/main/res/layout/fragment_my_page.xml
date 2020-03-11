@@ -31,7 +31,7 @@
                     >
 
                     <ImageView
-                        android:id="@+id/my_page_profile_image_iv"
+                        android:id="@+id/home_profile_image_iv"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:src="@drawable/ic_user_profile" />
@@ -43,7 +43,7 @@
                         android:gravity="center_vertical"
                         android:layout_marginLeft="20dp">
                         <TextView
-                            android:id="@+id/my_page_nickname_tv"
+                            android:id="@+id/home_nickname_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
@@ -60,7 +60,7 @@
                                 android:text="읽은책"
                                 android:textColor="@color/white"/>
                             <TextView
-                                android:id="@+id/my_page_my_books_cnt_tv"
+                                android:id="@+id/home_my_books_cnt_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="12sp"
@@ -85,7 +85,7 @@
                                 android:text="독후감"
                                 android:textColor="@color/white"/>
                             <TextView
-                                android:id="@+id/my_page_my_reports_cnt_tv"
+                                android:id="@+id/home_my_reports_cnt_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="12sp"
@@ -118,7 +118,7 @@
                 android:padding="10dp">
 
                 <LinearLayout
-                    android:id="@+id/my_page_my_books_btn"
+                    android:id="@+id/home_my_books_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -142,7 +142,7 @@
                     android:layout_height="match_parent"
                     android:background="#BDBDBD"/>
                 <LinearLayout
-                    android:id="@+id/my_page_my_reports_btn"
+                    android:id="@+id/home_my_reports_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -182,16 +182,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:id="@+id/my_page_draft_ll">
+                    android:id="@+id/home_draft_ll">
                     <TextView
-                        android:id="@+id/my_page_draft_title_tv"
+                        android:id="@+id/home_draft_title_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:textSize="13sp"
                         android:padding="5dp" />
                     <TextView
-                        android:id="@+id/my_page_draft_contents_tv"
+                        android:id="@+id/home_draft_contents_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="5"
@@ -208,7 +208,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:id="@+id/my_page_draft_more_view_btn"
+                        android:id="@+id/home_draft_more_view_btn"
                         android:text="@string/more_view_desc"
                         android:textColor="#000000"
                         android:textSize="12sp"
@@ -218,7 +218,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:id="@+id/my_page_draft_hide_ll"
+                    android:id="@+id/home_draft_hide_ll"
                     android:gravity="center_vertical"
                     android:layout_marginBottom="5dp">
                     <ImageView
@@ -264,7 +264,7 @@
                     android:layout_height="1dp"
                     android:background="@color/line_background"/>
                 <LinearLayout
-                    android:id="@+id/my_page_setting_modify_btn"
+                    android:id="@+id/home_setting_modify_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp">
@@ -324,6 +324,19 @@
                         android:text="@string/notice"
                         android:textSize="12sp"/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_background"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="20dp"
+                    android:textColor="@color/mainColor"
+                    android:fontFamily="@font/yangjin"
+                    android:text="@string/app_name"/>
             </LinearLayout>
         </LinearLayout>
     <Button

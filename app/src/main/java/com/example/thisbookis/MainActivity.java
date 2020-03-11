@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.thisbookis.fragment.MyPageFragment;
+import com.example.thisbookis.fragment.HomeFragment;
 import com.example.thisbookis.fragment.FeedFragment;
 import com.example.thisbookis.fragment.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragmentMyPage = new MyPageFragment();
+        fragmentMyPage = new HomeFragment();
 
         fragmentManager.beginTransaction().replace(R.id.main_fragment_container, fragmentMyPage).commit();
 
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void moveMyPage(){
         if(fragmentMyPage == null){
-            fragmentMyPage = new MyPageFragment();
+            fragmentMyPage = new HomeFragment();
             fragmentManager.beginTransaction().add(R.id.main_fragment_container, fragmentMyPage).commit();
         }
 

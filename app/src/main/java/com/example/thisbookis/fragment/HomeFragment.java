@@ -30,7 +30,6 @@ import com.example.thisbookis.NoticeActivity;
 import com.example.thisbookis.SettingAcitivty;
 import com.example.thisbookis.R;
 import com.example.thisbookis.data.Draft;
-import com.example.thisbookis.data.Notice;
 import com.example.thisbookis.data.User;
 import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
@@ -42,9 +41,9 @@ import java.util.Collections;
 import java.util.Comparator;
 
 
-public class MyPageFragment extends Fragment implements View.OnClickListener {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
-    public final static String TAG = "MyPageFragment";
+    public final static String TAG = "HomeFragment";
 
     private final int MODIFY_PROFILE_REQUEST_CODE = 100;
     private Fragment fragment;
@@ -79,19 +78,19 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         LinearLayout settingButton, myBooksButton, appInfoButton, myReportsButton, draftHideLinearLayout, draftLinearLayout
                 ,noticeButton;
 
-        profileImageView = rootView.findViewById(R.id.my_page_profile_image_iv);
-        profileNickNameTextView = rootView.findViewById(R.id.my_page_nickname_tv);
+        profileImageView = rootView.findViewById(R.id.home_profile_image_iv);
+        profileNickNameTextView = rootView.findViewById(R.id.home_nickname_tv);
         logoutButton = rootView.findViewById(R.id.my_page_logout_btn);
-        settingButton = rootView.findViewById(R.id.my_page_setting_modify_btn);
-        myBooksButton = rootView.findViewById(R.id.my_page_my_books_btn);
-        myBooksCountTextView = rootView.findViewById(R.id.my_page_my_books_cnt_tv);
-        myReportsCountTextView = rootView.findViewById(R.id.my_page_my_reports_cnt_tv);
-        myReportsButton = rootView.findViewById(R.id.my_page_my_reports_btn);
-        draftTitleTextView = rootView.findViewById(R.id.my_page_draft_title_tv);
-        draftContentTextView = rootView.findViewById(R.id.my_page_draft_contents_tv);
-        draftHideLinearLayout = rootView.findViewById(R.id.my_page_draft_hide_ll);
-        draftLinearLayout = rootView.findViewById(R.id.my_page_draft_ll);
-        draftMoreViewButton = rootView.findViewById(R.id.my_page_draft_more_view_btn);
+        settingButton = rootView.findViewById(R.id.home_setting_modify_btn);
+        myBooksButton = rootView.findViewById(R.id.home_my_books_btn);
+        myBooksCountTextView = rootView.findViewById(R.id.home_my_books_cnt_tv);
+        myReportsCountTextView = rootView.findViewById(R.id.home_my_reports_cnt_tv);
+        myReportsButton = rootView.findViewById(R.id.home_my_reports_btn);
+        draftTitleTextView = rootView.findViewById(R.id.home_draft_title_tv);
+        draftContentTextView = rootView.findViewById(R.id.home_draft_contents_tv);
+        draftHideLinearLayout = rootView.findViewById(R.id.home_draft_hide_ll);
+        draftLinearLayout = rootView.findViewById(R.id.home_draft_ll);
+        draftMoreViewButton = rootView.findViewById(R.id.home_draft_more_view_btn);
         appInfoButton = rootView.findViewById(R.id.home_app_info_ll);
         noticeButton = rootView.findViewById(R.id.home_app_notice_ll);
 
@@ -187,7 +186,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
     private void removeSharedPreferences(){
         SharedPreferences.Editor editor = BaseApplication.loginData.edit();
         editor.putBoolean(BaseApplication.LOGIN_DATA_CHECK_KEY, false);
-        editor.commit();
+        editor.apply();
     }
 
     private void redirectLoginActivity(){
@@ -208,20 +207,20 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
             case R.id.my_page_logout_btn:
                 logout();
                 break;
-            case R.id.my_page_setting_modify_btn:
+            case R.id.home_setting_modify_btn:
                 Intent settingIntent = new Intent(getActivity(), SettingAcitivty.class);
                 startActivityForResult(settingIntent, MODIFY_PROFILE_REQUEST_CODE);
                 break;
-            case R.id.my_page_my_books_btn:
+            case R.id.home_my_books_btn:
                 Log.d(TAG, BaseApplication.userData.getMyBooks()+" ");
                 Intent booksIntent = new Intent(getActivity(), MyBooksActivity.class);
                 startActivity(booksIntent);
                 break;
-            case R.id.my_page_my_reports_btn:
+            case R.id.home_my_reports_btn:
                 Intent reportIntent = new Intent(getActivity(), MyReportsActivity.class);
                 startActivity(reportIntent);
                 break;
-            case R.id.my_page_draft_more_view_btn:
+            case R.id.home_draft_more_view_btn:
                 Intent intent = new Intent(getActivity(), DraftListActivity.class);
                 startActivity(intent);
                 break;
