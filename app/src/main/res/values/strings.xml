@@ -36,6 +36,8 @@
     <string name="copyright">출처 : 인터파크</string>
     <string name="top3">TOP 3</string>
 
+    <string name="join_guide">- 프로필 사진 등록을 위해 권한을 허용하여 주세요\n- 이 단계에서는 앱이 로그인에 사용하신 소셜에 연동이 이미 되어 있으므로 회원 가입을 취소하고 싶으시다면 해당 소셜에서 연동을 해제하여 주세요</string>
+    <string name="notice">공지사항</string>
     <string name="app_info_button_text">어플리케이션 정보</string>
     <string name="app_info">개발자 : 김광영\n버전 : 1.0.0\n개발자 이메일 : kwangyoung.dev@gmail.com</string>
 

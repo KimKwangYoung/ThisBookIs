@@ -26,9 +26,11 @@ import com.example.thisbookis.DraftListActivity;
 import com.example.thisbookis.LoginActivity;
 import com.example.thisbookis.MyBooksActivity;
 import com.example.thisbookis.MyReportsActivity;
+import com.example.thisbookis.NoticeActivity;
 import com.example.thisbookis.SettingAcitivty;
 import com.example.thisbookis.R;
 import com.example.thisbookis.data.Draft;
+import com.example.thisbookis.data.Notice;
 import com.example.thisbookis.data.User;
 import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
@@ -74,7 +76,8 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         ImageView profileImageView;
         TextView profileNickNameTextView, myBooksCountTextView, myReportsCountTextView
                 , draftTitleTextView, draftContentTextView, draftMoreViewButton;
-        LinearLayout settingButton, myBooksButton, appInfoButton, myReportsButton, draftHideLinearLayout, draftLinearLayout;
+        LinearLayout settingButton, myBooksButton, appInfoButton, myReportsButton, draftHideLinearLayout, draftLinearLayout
+                ,noticeButton;
 
         profileImageView = rootView.findViewById(R.id.my_page_profile_image_iv);
         profileNickNameTextView = rootView.findViewById(R.id.my_page_nickname_tv);
@@ -90,6 +93,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         draftLinearLayout = rootView.findViewById(R.id.my_page_draft_ll);
         draftMoreViewButton = rootView.findViewById(R.id.my_page_draft_more_view_btn);
         appInfoButton = rootView.findViewById(R.id.home_app_info_ll);
+        noticeButton = rootView.findViewById(R.id.home_app_notice_ll);
 
         logoutButton.setOnClickListener(this);
         settingButton.setOnClickListener(this);
@@ -97,6 +101,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         myReportsButton.setOnClickListener(this);
         draftMoreViewButton.setOnClickListener(this);
         appInfoButton.setOnClickListener(this);
+        noticeButton.setOnClickListener(this);
 
         RequestOptions options = BaseApplication.profileImageOptions;
         Glide.with(fragment).load(userData.getProfileURL()).apply(options).into(profileImageView);
@@ -224,7 +229,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
                 Intent appInfoIntent = new Intent(getActivity(), AppInfoActivity.class);
                 startActivity(appInfoIntent);
                 break;
-
+            case R.id.home_app_notice_ll:
+                Intent noticeIntent = new Intent(getActivity(), NoticeActivity.class);
+                startActivity(noticeIntent);
+                break;
         }
     }
 

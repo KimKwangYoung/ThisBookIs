@@ -86,7 +86,7 @@
         android:padding="15dp"
         android:textSize="12sp"
         android:lineSpacingExtra="3dp"
-        android:text="- 프로필 사진 등록을 위해 권한을 허용하여 주세요\n- 이 단계에서는 앱이 로그인에 사용하신 소셜에 연동이 이미 되어 있으므로 회원 가입을 취소하고 싶으시다면 해당 소셜에서 연동을 해제하여 주세요"/>
+        android:text="@string/join_guide"/>
 
     <Button
         android:id="@+id/join_request_btn"

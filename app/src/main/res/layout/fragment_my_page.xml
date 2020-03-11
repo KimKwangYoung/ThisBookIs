@@ -302,6 +302,28 @@
                         android:text="@string/app_info_button_text"
                         android:textSize="12sp"/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_background"/>
+                <LinearLayout
+                    android:id="@+id/home_app_notice_ll"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_shout"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:text="@string/notice"
+                        android:textSize="12sp"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     <Button
