@@ -14,9 +14,9 @@
         app:showAsAction="ifRoom"
         android:enabled="true" />
     <item
-        android:id="@+id/ranking_tab"
-        android:title="@string/feed"
-        android:icon="@drawable/ic_web_black_24dp"
+        android:id="@+id/recommend_tab"
+        android:title="@string/recommend"
+        android:icon="@drawable/ic_lightbulb_outline_black_24dp"
         app:showAsAction="ifRoom"
         android:enabled="true"/>
 </menu>

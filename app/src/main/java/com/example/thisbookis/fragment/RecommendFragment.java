@@ -2,7 +2,6 @@ package com.example.thisbookis.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +34,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.Repo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,20 +50,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FeedFragment extends Fragment {
+public class RecommendFragment extends Fragment {
 
-    public static final String TAG = "FeedFragment";
+    public static final String TAG = "RecommendFragment";
 
     private final int TOP_RANK_BOOK_INDEX = 0;
     private final int BEST_SELLER_INDEX = 1;
 
     Context mContext;
 
-    private User me, releatedReportUser;
+    private User me;
 
     private ArrayList<Book> topRankBooks;
     private ArrayList<BestSeller.Item> topThreeBestSellers;
-    private Report releatedReport;
     private ViewGroup rootView;
 
     private String bookRefKey;
@@ -77,7 +74,7 @@ public class FeedFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_feed, container, false);
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_recommend, container, false);
 
 
         initData();
@@ -95,24 +92,20 @@ public class FeedFragment extends Fragment {
         getAllReport();
     }
 
-    private void initView(ViewGroup rootView){
-
-    }
-
     private void initTopRankBookLayout(){
         ViewPager topRankBookViewPager;
-        topRankBookViewPager = rootView.findViewById(R.id.feed_top_rank_book_vp);
+        topRankBookViewPager = rootView.findViewById(R.id.recommend_top_rank_book_vp);
         topRankBookViewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()
                 , FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, TOP_RANK_BOOK_INDEX));
         topRankBookViewPager.setCurrentItem(0);
 
-        TabLayout tabLayout = rootView.findViewById(R.id.feed_top_rank_book_tl);
+        TabLayout tabLayout = rootView.findViewById(R.id.recommend_top_rank_book_tl);
         tabLayout.setupWithViewPager(topRankBookViewPager, true);
     }
 
     private void getTopRankBook() {
         topRankBooks = new ArrayList<>();
-        LinearLayout topRankBookLinearLayout = rootView.findViewById(R.id.feed_top_rank_book_ll);
+        LinearLayout topRankBookLinearLayout = rootView.findViewById(R.id.recommend_top_rank_book_ll);
 
         DatabaseReference reportRef = FirebaseDatabase.getInstance().getReference()
                 .child(bookRefKey);
@@ -247,13 +240,13 @@ public class FeedFragment extends Fragment {
      */
 
     private void setReleatedReportLayout(User writer, Report report){
-        LinearLayout releatedReportLinearLayout = rootView.findViewById(R.id.feed_releated_report_ll);
-        ImageView writerProfileImageView = rootView.findViewById(R.id.feed_releated_report_profile_iv);
-        TextView wrtierNicknameTextView = rootView.findViewById(R.id.feed_releated_report_nickname_tv);
-        TextView reportLikeCountTextView = rootView.findViewById(R.id.feed_releated_report_like_cnt_tv);
-        TextView BookTitleTextView = rootView.findViewById(R.id.feed_releated_report_book_title_tv);
-        TextView reportTitleTextView = rootView.findViewById(R.id.feed_releated_report_title_tv);
-        TextView reportContentTextView = rootView.findViewById(R.id.feed_releated_report_content_tv);
+        LinearLayout releatedReportLinearLayout = rootView.findViewById(R.id.recommend_releated_report_ll);
+        ImageView writerProfileImageView = rootView.findViewById(R.id.recommend_releated_report_profile_iv);
+        TextView wrtierNicknameTextView = rootView.findViewById(R.id.recommend_releated_report_nickname_tv);
+        TextView reportLikeCountTextView = rootView.findViewById(R.id.recommend_releated_report_like_cnt_tv);
+        TextView BookTitleTextView = rootView.findViewById(R.id.recommend_releated_report_book_title_tv);
+        TextView reportTitleTextView = rootView.findViewById(R.id.recommend_releated_report_title_tv);
+        TextView reportContentTextView = rootView.findViewById(R.id.recommend_releated_report_content_tv);
 
         Glide.with(mContext).load(writer.getProfileURL()).apply(BaseApplication.profileImageOptions)
                 .into(writerProfileImageView);
@@ -290,7 +283,7 @@ public class FeedFragment extends Fragment {
      * 인터파크 도서 api를 활용하여 '국내도서' 베스트 셀러 가져오기
      */
     private void getBestSeller(){
-        LinearLayout bestsellerLinearLayout = rootView.findViewById(R.id.feed_best_seller_ll);
+        LinearLayout bestsellerLinearLayout = rootView.findViewById(R.id.recommend_best_seller_ll);
 
         Call<BestSeller> call = InterParkApiClient.getInstance().bestSellerService.getBestSeller(
                 getString(R.string.inter_park_api_key), "100", "json");
@@ -331,14 +324,14 @@ public class FeedFragment extends Fragment {
             topThreeBestSellers.add(bestSellers.get(i));
         }
 
-        ViewPager bestSellerViewPager = rootView.findViewById(R.id.feed_best_seller_vp);
+        ViewPager bestSellerViewPager = rootView.findViewById(R.id.recommend_best_seller_vp);
         bestSellerViewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
                 BEST_SELLER_INDEX));
         bestSellerViewPager.setCurrentItem(0);
 
 
-        TabLayout tabLayout = rootView.findViewById(R.id.feed_best_seller_tl);
+        TabLayout tabLayout = rootView.findViewById(R.id.recommend_best_seller_tl);
         tabLayout.setupWithViewPager(bestSellerViewPager, true);
     }
 
@@ -414,12 +407,12 @@ public class FeedFragment extends Fragment {
 
 
     private void initTopRankReportLayout(User user, Report report){
-        LinearLayout topRankReportLinearLayout = rootView.findViewById(R.id.feed_top_rank_report_ll);
-        ImageView topRankReportWriterProfileImageView = rootView.findViewById(R.id.feed_top_rank_report_profile_iv);
-        TextView topRankReportWriterNicknameTextView = rootView.findViewById(R.id.feed_top_rank_report_nickname_tv);
-        TextView topRankReportLikeCountTextView = rootView.findViewById(R.id.feed_top_rank_report_like_cnt_tv);
-        TextView topRankReportTitleTextView = rootView.findViewById(R.id.feed_top_rank_report_title_tv);
-        TextView topRankReportContentTextView = rootView.findViewById(R.id.feed_top_rank_report_content_tv);
+        LinearLayout topRankReportLinearLayout = rootView.findViewById(R.id.recommend_top_rank_report_ll);
+        ImageView topRankReportWriterProfileImageView = rootView.findViewById(R.id.recommend_top_rank_report_profile_iv);
+        TextView topRankReportWriterNicknameTextView = rootView.findViewById(R.id.recommend_top_rank_report_nickname_tv);
+        TextView topRankReportLikeCountTextView = rootView.findViewById(R.id.recommend_top_rank_report_like_cnt_tv);
+        TextView topRankReportTitleTextView = rootView.findViewById(R.id.recommend_top_rank_report_title_tv);
+        TextView topRankReportContentTextView = rootView.findViewById(R.id.recommend_top_rank_report_content_tv);
 
         Glide.with(mContext).load(user.getProfileURL()).apply(BaseApplication.profileImageOptions)
                 .into(topRankReportWriterProfileImageView);

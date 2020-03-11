@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.thisbookis.fragment.HomeFragment;
-import com.example.thisbookis.fragment.FeedFragment;
+import com.example.thisbookis.fragment.RecommendFragment;
 import com.example.thisbookis.fragment.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.search_tab:
                         moveSearch();
                         return true;
-                    case R.id.ranking_tab:
+                    case R.id.recommend_tab:
                         moveRanking();
                         return true;
                 }
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void moveRanking(){
         if(fragmentRanking == null){
-            fragmentRanking = new FeedFragment();
+            fragmentRanking = new RecommendFragment();
             fragmentManager.beginTransaction().add(R.id.main_fragment_container, fragmentRanking).commit();
         }
 

@@ -5,23 +5,64 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:mContext=".fragment.FeedFragment">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:orientation="vertical"
             android:padding="20dp">
-
             <LinearLayout
-                android:id="@+id/feed_top_rank_book_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/feed_item_background"
+                android:orientation="vertical"
+                android:padding="10dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/mainColor"
+                        android:textSize="18sp"
+                        android:text="@string/app_name"
+                        android:fontFamily="@font/cafe24ohsquare"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/cafe24ohsquare"
+                        android:textColor="@color/black"
+                        android:text="에서"
+                        android:layout_marginStart="4dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/mainColor"
+                        android:textSize="18sp"
+                        android:text="@string/recommend"
+                        android:fontFamily="@font/cafe24ohsquare"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/cafe24ohsquare"
+                        android:textColor="@color/black"
+                        android:text="합니다"
+                        android:layout_marginStart="4dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/recommend_top_rank_book_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/recommend_item_background"
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:padding="15dp">
@@ -45,12 +86,12 @@
                     android:textStyle="bold" />
 
                 <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/feed_top_rank_book_vp"
+                    android:id="@+id/recommend_top_rank_book_vp"
                     android:layout_width="match_parent"
                     android:layout_height="155dp"/>
 
                 <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/feed_top_rank_book_tl"
+                    android:id="@+id/recommend_top_rank_book_tl"
                     android:layout_width="wrap_content"
                     android:layout_height="15dp"
                     android:layout_gravity="center_horizontal"
@@ -59,18 +100,18 @@
             </LinearLayout>
             <!-- 최근 독후감관련 다른 독후감 부분 -->
             <LinearLayout
-                android:id="@+id/feed_releated_report_ll"
+                android:id="@+id/recommend_releated_report_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/feed_item_background"
+                android:background="@drawable/recommend_item_background"
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:padding="15dp"
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/feed_releated_report_book_title_tv"
+                    android:id="@+id/recommend_releated_report_book_title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/cafe24ohsquare"
@@ -92,7 +133,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/feed_releated_report_profile_iv"
+                        android:id="@+id/recommend_releated_report_profile_iv"
                         android:layout_width="50dp"
                         android:layout_height="50dp" />
 
@@ -104,13 +145,13 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/feed_releated_report_nickname_tv"
+                            android:id="@+id/recommend_releated_report_nickname_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black" />
 
                         <TextView
-                            android:id="@+id/feed_releated_report_like_cnt_tv"
+                            android:id="@+id/recommend_releated_report_like_cnt_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/line_background"
@@ -125,7 +166,7 @@
                     android:background="@color/line_background" />
 
                 <TextView
-                    android:id="@+id/feed_releated_report_title_tv"
+                    android:id="@+id/recommend_releated_report_title_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -134,7 +175,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/feed_releated_report_content_tv"
+                    android:id="@+id/recommend_releated_report_content_tv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="6dp"
@@ -143,11 +184,11 @@
             </LinearLayout>
             <!-- 베스트 셀러 부분 -->
             <LinearLayout
-                android:id="@+id/feed_best_seller_ll"
+                android:id="@+id/recommend_best_seller_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/feed_item_background"
+                android:background="@drawable/recommend_item_background"
                 android:elevation="5dp"
                 android:orientation="vertical"
                 android:padding="15dp"
@@ -171,13 +212,13 @@
                     android:textStyle="bold" />
 
                 <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/feed_best_seller_vp"
+                    android:id="@+id/recommend_best_seller_vp"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:layout_marginTop="10dp"/>
 
                 <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/feed_best_seller_tl"
+                    android:id="@+id/recommend_best_seller_tl"
                     android:layout_width="wrap_content"
                     android:layout_height="10dp"
                     android:layout_gravity="center_horizontal"
@@ -193,13 +234,13 @@
             </LinearLayout>
             <!-- 인기 있는 독후감 부분 -->
             <LinearLayout
-                android:id="@+id/feed_top_rank_report_ll"
+                android:id="@+id/recommend_top_rank_report_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="15dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/feed_item_background"
+                android:background="@drawable/recommend_item_background"
                 android:elevation="5dp"
                 android:visibility="gone">
 
@@ -225,7 +266,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/feed_top_rank_report_profile_iv"
+                        android:id="@+id/recommend_top_rank_report_profile_iv"
                         android:layout_width="50dp"
                         android:layout_height="50dp" />
 
@@ -237,13 +278,13 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/feed_top_rank_report_nickname_tv"
+                            android:id="@+id/recommend_top_rank_report_nickname_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black" />
 
                         <TextView
-                            android:id="@+id/feed_top_rank_report_like_cnt_tv"
+                            android:id="@+id/recommend_top_rank_report_like_cnt_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/line_background"
@@ -258,7 +299,7 @@
                     android:background="@color/line_background" />
 
                 <TextView
-                    android:id="@+id/feed_top_rank_report_title_tv"
+                    android:id="@+id/recommend_top_rank_report_title_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -267,7 +308,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/feed_top_rank_report_content_tv"
+                    android:id="@+id/recommend_top_rank_report_content_tv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="6dp"
@@ -276,7 +317,5 @@
                     android:textColor="#464646" />
             </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
-
 
 </ScrollView>
