@@ -1,8 +1,6 @@
 package com.ky.thisbookis;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ky.thisbookis.data.MyBook;
-import com.ky.thisbookis.data.SearchResult;
-
 import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MyBooksAdpater extends RecyclerView.Adapter<MyBooksAdpater.Viewholder> {
 
@@ -83,50 +74,12 @@ public class MyBooksAdpater extends RecyclerView.Adapter<MyBooksAdpater.Viewhold
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.grid_item_ll:
-                    searchBookDocument();
+                    MyBook book = myBooksArray.get(getAdapterPosition());
+                    String isbn = book.getIsbn();
+                    isbn = isbn.substring(isbn.lastIndexOf(" ") + 1);
+                    BaseApplication.moveToBookContentActivity(context, isbn, book.getTitle());
                     break;
             }
-
-        }
-
-        private void searchBookDocument() {
-            String isbn = myBooksArray.get(getAdapterPosition()).getIsbn();
-            String title = myBooksArray.get(getAdapterPosition()).getTitle();
-            String keyword = isbn.substring(isbn.lastIndexOf(" ") + 1);
-            String authorizationKey = context.getString(R.string.kakao_api_key);
-            Call<SearchResult> call = KakaoApiClient.getInstance().searchService.getBookList(authorizationKey, keyword, 50, 1);
-            Callback<SearchResult> callback = new Callback<SearchResult>() {
-                @Override
-                public void onResponse(Call<SearchResult> call, Response<SearchResult> response) {
-                    if(response.isSuccessful()) {
-                        SearchResult searchResult = response.body();
-                        List<SearchResult.Document> documentList = searchResult.getDocuments();
-                        SearchResult.Document bookDocument = null;
-                        for(SearchResult.Document d : documentList){
-                            if(d.getTitle().equals(title)){
-                                bookDocument = d;
-                                break;
-                            }
-                        }
-
-                        Intent intent = new Intent(context, BookContentsActivity.class);
-                        intent.putExtra("book", bookDocument);
-                        context.startActivity(intent);
-
-                    }else{
-                        BaseApplication.showErrorToast(context, "책 정보를 읽어오지 못했습니다. 다시 시도하여 주세요");
-                        Log.e("MyBooksAdapter", "Retrofit Error :: " + response.errorBody());
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<SearchResult> call, Throwable t) {
-
-                }
-            };
-
-            call.enqueue(callback);
         }
     }
 }
