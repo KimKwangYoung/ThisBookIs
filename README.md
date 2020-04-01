@@ -46,5 +46,5 @@
   * 개발자 : 김광영
   * 개발자 이메일 : kwangyoung.dev@gmail.com
   * 플레이스토어 등록 여부 : 등록
-  * 플레이스토어 URL : 검수중
+  * 플레이스토어 URL : https://play.google.com/store/apps/details?id=com.ky.thisbookis
   
